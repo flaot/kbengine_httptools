@@ -57,7 +57,7 @@ bool Script::install(const wchar_t *xxx, ...)
 bool Script::uninstall()
 {
     ...
-	PyPlatform::finalise();
+    PyPlatform::finalise();
     httptools::uninstallModule();//httptools的卸载
     ...
 }
@@ -81,7 +81,7 @@ bool Script::uninstall()
 
 ```
     ...
-	cd xml && $(MAKE) $@
+    cd xml && $(MAKE) $@
     cd httptools && $(MAKE) $@
 ```
 以下MakeFile文件的'MY_LIBS'下增加条目  httptools
