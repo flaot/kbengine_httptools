@@ -104,7 +104,7 @@ MY_LIBS =		\
 	entitydef	\
 	pyscript	\
 	network		\
-	httptools   \
+	httptools	\
 	thread
 ```
 
