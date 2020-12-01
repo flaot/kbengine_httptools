@@ -1,5 +1,5 @@
 # kbengine_httptools
-基于[kbengine](https://github.com/kbengine/kbengine)及[http-parser](https://https://github.com/nodejs/http-parser)的kbengine插件httptools 
+基于[kbengine](https://github.com/kbengine/kbengine)及[http-parser](https://github.com/nodejs/http-parser)的kbengine插件httptools 
 
 为[kbengine-httpserver](https://github.com/asynchronoust/kbengine-httpserver)写的kbengine内置httptools插件。参考了python的[httptools](https://github.com/MagicStack/httptools)插件
 
