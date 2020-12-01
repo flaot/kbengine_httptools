@@ -26,7 +26,21 @@ class HttpParserUpgrade(Exception):
 
 class HttpParser:
 
-    def __init__(self, obj: any, mode: int):
+    def __init__(self, protocol: any, mode: int):
+        """HttpParser
+
+        protocol -- a Python object with the following methods
+        (all optional):
+
+          - on_message_begin()
+          - on_header(name: bytes, value: bytes)
+          - on_headers_complete()
+          - on_body(body: bytes)
+          - on_message_complete()
+          - on_chunk_header()
+          - on_chunk_complete()
+          - on_status(status: bytes)
+        """
         pass
 
     def on_header(self, header_name: bytes, header_value: bytes):
@@ -50,46 +64,78 @@ class HttpParser:
     def on_chunk_complete(self):
         print("on_chunk_complete")
 
-    def get_http_version(self):
-        return 1.0
+    def get_http_version(self) -> str:
+        """Return an HTTP protocol version."""
+        return "1.0"
 
-    def should_keep_alive(self):
+    def should_keep_alive(self) -> bool:
+        """Return ``True`` if keep-alive mode is preferred."""
         return False
 
-    def should_upgrade(self):
+    def should_upgrade(self) -> bool:
+        """Return ``True`` if the parsed request is a valid Upgrade request.
+           The method exposes a flag set just before on_headers_complete.
+           Calling this method earlier will only yield `False`.
+           """
         return False
 
     def feed_data(self, data: bytes):
+        """Feed data to the parser.
+
+        Will eventually trigger callbacks on the ``protocol``
+        object.
+
+        On HTTP upgrade, this method will raise an
+        ``HttpParserUpgrade`` exception, with its sole argument
+        set to the offset of the non-HTTP data in ``data``.
+        """
         return None
 
 
 class HttpRequestParser(HttpParser):
 
-    def __init__(self, obj: any):
-        HttpParser.__init__(self, obj, 0)
+    def __init__(self, protocol: any):
+        """HttpRequestParser
+
+        protocol -- a Python object with the following methods
+        (add optional):
+
+          - on_url(url: bytes)
+          - get_method()
+        """
+        HttpParser.__init__(self, protocol, 0)
 
     def on_url(self, at: bytes):
         print("on_url::", at)
 
-    def get_method(self):
+    def get_method(self) -> str:
+        """Return HTTP request method (GET, HEAD, etc)"""
         return ""
 
 
 class HttpResponseParser(HttpParser):
 
-    def __init__(self, obj: any):
-        HttpParser.__init__(self, obj, 1)
+    def __init__(self, protocol: any):
+        """HttpResponseParser
+
+        protocol -- a Python object with the following methods
+        (add optional):
+
+          - on_status(url: bytes)
+          - get_status_code()
+        """
+        HttpParser.__init__(self, protocol, 1)
 
     def on_status(self, at: bytes):
         print("on_status", at)
 
-    def get_status_code(self) -> bool:
-        return False
+    def get_status_code(self) -> int:
+        """Return the status code of the HTTP response"""
+        return 200
 
 
 def parse_url(url: str) -> tuple:
-    """
-    解析http地址信息
+    """Parse URL strings or bytes into a tuple.
     0-schema: str
     1-host: str
     2-port: int
@@ -97,8 +143,5 @@ def parse_url(url: str) -> tuple:
     4-query: str
     5-fragment: str
     6-userinfo: str
-
-    :rtype: tuple
-    :param url: 地址栏输入的地址
     """
     return "", "", 0, "", "", "", ""
