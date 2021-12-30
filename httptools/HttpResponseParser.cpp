@@ -50,10 +50,8 @@ namespace KBEngine {
                 S_Return;
             }
 
-            int ret = -1;
             PyObject* pyobj = NULL;
-            ret = PyArg_ParseTuple(args, "O", &pyobj);
-            if (ret == -1)
+            if (!PyArg_ParseTuple(args, "O", &pyobj))
             {
                 PyErr_Format(PyExc_AssertionError, "HttpParser::new: args error!");
                 PyErr_PrintEx(0);

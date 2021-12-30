@@ -54,12 +54,12 @@ namespace KBEngine {
             char* surl = NULL;
             Py_ssize_t surl_length = 0;
             ret = PyArg_ParseTuple(args, "s", &surl);
-            if (surl == NULL || ret == -1)
+            if (surl == NULL || !ret)
             {
                 PyErr_Clear();
                 PyObject *pyObj;
                 ret = PyArg_ParseTuple(args, "O", &pyObj);
-                if (ret != -1 && PyBytes_Check(pyObj))
+                if (ret && PyBytes_Check(pyObj))
                 {
                     if (PyBytes_AsStringAndSize(pyObj, &surl, &surl_length) < 0)
                     {

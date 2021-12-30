@@ -73,11 +73,9 @@ namespace KBEngine {
                 S_Return;
             }
 
-            int ret = -1;
-            PyObject* pyobj = NULL;
             int level;
-            ret = PyArg_ParseTuple(args, "Oi", &pyobj, &level);
-            if (ret == -1)
+            PyObject* pyobj = NULL;
+            if (!PyArg_ParseTuple(args, "Oi", &pyobj, &level))
             {
                 PyErr_Format(PyExc_AssertionError, "HttpParser::new: args error!");
                 PyErr_PrintEx(0);
